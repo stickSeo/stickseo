@@ -4,19 +4,21 @@ import java.util.*;
 import java.sql.*;
 import ch10.RegisterBean;
 
-public class RegisterMgr {
+public class RegisterMgrPool {
 
-	private final String JDBC_DRIVER = "org.gjt.mm.mysql.Driver";
-	private final String JDBC_URL = "jdbc:mysql://localhost:3306/test";
-	private final String JDBC_USER = "javauser";
-	private final String JDBC_PASS = "1234";
+	private DBConnectionMgr pool = null;
 	
+//	private final String JDBC_DRIVER = "org.gjt.mm.mysql.Driver";
+//	private final String JDBC_URL = "jdbc:mysql://localhost:3306/test";
+//	private final String JDBC_USER = "javauser";
+//	private final String JDBC_PASS = "1234";
+//	
 	private final String Table = "tblRegister";
-
 	
-	public RegisterMgr(){
+	public RegisterMgrPool(){
 		try{
-			Class.forName(JDBC_DRIVER).newInstance();
+//			Class.forName(JDBC_DRIVER).newInstance();
+			pool = DBConnectionMgr.getInstance();
 		}catch(Exception ex){
 			System.out.println("Error : JDBC 드라이버 로딩 실패");
 		}
@@ -32,7 +34,8 @@ public class RegisterMgr {
 
 		try{
 			
-			conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASS);
+//			conn = DriverManager.getConnection(JDBC_URL,JDBC_USER,JDBC_PASS);
+			conn = pool.getConnection();
 			String sql = "select * from " +Table;
 			pstmt = conn.prepareStatement(sql);
 			rs  = pstmt.executeQuery();
@@ -57,9 +60,10 @@ public class RegisterMgr {
 			System.out.println("Exception : " + ex);
 		}finally{
 			
-			if(rs!=null) try{rs.close();}catch(SQLException ex){}
-			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex){}
-			if(conn!=null) try{conn.close();}catch(SQLException ex){}
+//			if(rs!=null) try{rs.close();}catch(SQLException ex){}
+//			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex){}
+//			if(conn!=null) try{conn.close();}catch(SQLException ex){}
+			pool.freeConnection(conn);
 			
 		}
 		

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ page import = "java.util.*, ch10.*" %>
-<jsp:useBean id="regMgr" class="ch10.RegisterMgr" scope="page"/>
+<jsp:useBean id="regMgr" class="ch10.RegisterMgrPool" scope="page"/>
 <%
 	
 	ArrayList data = regMgr.getMemberList();
