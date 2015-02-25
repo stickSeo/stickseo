@@ -24,6 +24,11 @@ public class RegisterMgrPool {
 		}
 	}
 
+	
+	/*
+	 * 회원 목록
+	 * 
+	*/
 	public ArrayList getMemberList(){
 		
 		Connection conn = null;
@@ -63,11 +68,47 @@ public class RegisterMgrPool {
 //			if(rs!=null) try{rs.close();}catch(SQLException ex){}
 //			if(pstmt!=null) try{pstmt.close();}catch(SQLException ex){}
 //			if(conn!=null) try{conn.close();}catch(SQLException ex){}
-			pool.freeConnection(conn);
+			pool.freeConnection(conn,pstmt,rs);
 			
 		}
 		
 		return arrayList;
 		
+	}
+	
+	
+	/*
+	 * 아이디 비밀번호 체크
+	 * 
+	*/
+	public boolean passCheck(String cust_id, String cust_passwd){
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		boolean loginCon = false;
+		
+		try{
+			
+			conn = pool.getConnection();
+			
+			String sql = "select count(*) from " +Table+" where id=? and passwd=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, cust_id);
+			pstmt.setString(2, cust_passwd);
+			rs = pstmt.executeQuery();
+			
+			rs.next();
+			if(rs.getInt(1)>0) loginCon = true;
+			
+
+		}catch(Exception ex){
+			System.out.println("Exception : " + ex);
+		}finally{
+			
+			pool.freeConnection(conn,pstmt,rs);
+			
+		}
+		return loginCon;
 	}
 }

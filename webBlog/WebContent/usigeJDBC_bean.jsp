@@ -1,22 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
+ pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ page import = "java.util.*, ch10.*" %>
-<jsp:useBean id="regMgr" class="ch10.RegisterMgrPool" scope="page"/>
+<%-- <jsp:useBean id="memMgr" class="ch10.RegisterMgrPool" scope="page"/> --%>
 <%
 	
-	ArrayList data = regMgr.getMemberList();
+	ArrayList data = memMgr.getMemberList();
 
 %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<!-- <!DOCTYPE html> -->
+<!-- <html> -->
+<!-- <head> -->
+<!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> -->
+<!-- <title>Insert title here</title> -->
+<!-- </head> -->
+<!-- <body> -->
+    <center>
 	<h1>JDBC,JAVABeans 와 연동한 테이블 실습</h1>
 	<hr>
-	<table bordercolor="#0000ff" border="1">
+	</center>
+	<table bordercolor="#0000ff" border="1" align="center">
 		<tr>
 		  <td><strong>ID</strong></td>
 		  <td><strong>PASSWD</strong></td>
@@ -58,5 +60,5 @@
 		}
 	%>
 	</table>
-</body>
-</html>
+<!-- </body> -->
+<!-- </html> -->
