@@ -1,0 +1,61 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="false" %>
+<html>
+<head>
+<script src="//code.jquery.com/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script>
+$(window).load(function() {
+
+	// javascript 필터 함수
+	function cleanXss(src) {
+		 if (!src) {
+		  return "";
+		 }
+		src = decodeURIComponent(src);
+		src = src.replace(/<(\/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(\/)?>/gi,"").replace(/\r|\n|&nbsp;/gi,"");
+		src = src.replace(/('|\")*\/*>+/gi,"").replace(/<+('|\")*\/*/gi,"");
+
+		return src;
+	}
+	
+	$("#goFilterTest").click( function(){
+	
+		var filterTest = $("#s_msg").val();
+		if( ""!=( filterTest ) )
+		{
+			alert( " String : " + filterTest );
+			alert( " Filter String : " + cleanXss( filterTest) );
+		}
+		$("#form").submit();
+	});
+	
+});
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+</head>
+<body>
+<h1>
+	******************* Filter TEST ********************  
+</h1>
+
+	<div>
+		<form id="form" method="get" action="/loginProc" >
+		
+			id = <input type="text" name="id" /> <br/>
+			pwd = <input type="text" name="pwd" /> <br/>
+			msg > <input type="text" name="msg" value="" /> <br/>
+			script_msg > <input type="text" id="s_msg" value=""/> <br/>
+			<input type="button" id="goFilterTest" value="submit" />
+
+		</form>
+	</div>
+	<br/> <hr> <br/>
+	<div>
+		Filter_ id <input type="text" value="${id}"/> <br/>
+		Filter_ pwd  <input type="text" value="${pwd}"/> <br/>
+		Filter_ msg  <input type="text" value="${msg}"/> <br/>
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="sample">
+     
+    <!-- 게시판 리스트 조회  -->
+    <select id="selectBoardList" parameterType="hashmap" resultType="hashmap">
+        <![CDATA[
+            SELECT * 
+     		  FROM    
+			  ( 
+			    SELECT 
+			    	  TB.B_NO  
+		             ,TB.B_TITLE  
+		             ,TB.B_NAME  
+		             ,TB.B_VEIWCNT  
+		             ,TO_CHAR(TB.B_DATE,'YYYY/MM/DD') B_DATE
+		             , /*+ INDEX_DESC(BBSTB B_NO) */ ROWNUM as rnum 
+			      FROM 
+			      	  (
+			      		 SELECT /*+ INDEX_DESC(BBSTB B_NO) */ * 
+			      		   FROM BBSTB 
+			      		 ORDER BY B_DATE DESC
+			      	  ) TB 
+			     WHERE
+			          ROWNUM <= TO_NUMBER(#{pageNum}) * TO_NUMBER(#{pageRow})
+		]]>
+           <if test="searchKey !=null and searchKey != '' ">
+      	       <![CDATA[
+            	   AND B_TITLE LIKE '%' || #{searchKey} || '%'
+         	   ]]>
+           </if>
+        <![CDATA[
+			  )  
+ 		     WHERE rnum >= ( ( TO_NUMBER(#{pageNum})-1 ) * TO_NUMBER(#{pageRow}) ) + 1 
+ 		     ORDER BY rnum
+ 		]]>
+    </select>
+    
+    <!-- 게시판 리스트 개수 조회  -->
+    <select id="selectListCnt" parameterType="hashmap" resultType="hashmap">
+	    <![CDATA[
+	    	SELECT COUNT(B_NO) CNT
+	    	  FROM BBSTB
+	    	  WHERE 1=1
+	    ]]>
+	    <if test="searchKey !=null and searchKey != '' ">
+     	       <![CDATA[
+           	   	AND B_TITLE LIKE '%' || #{searchKey} || '%'
+        	   ]]>
+        </if>
+    </select>
+    
+</mapper>

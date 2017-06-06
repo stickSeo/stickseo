@@ -1,0 +1,115 @@
+package com.b2b.FilterTest;
+
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.b2b.StringFilter.Snippet;
+import com.b2b.StringFilter.StringFilter;
+
+/**
+ * Handles requests for the application home page.
+ */
+@Controller
+public class HomeController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
+	/**
+	 * Simply selects the home view to render by returning its name.
+	 */
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String home(Locale locale, Model model) {
+		logger.info("Welcome home! The client locale is {}.", locale);
+		
+		Date date = new Date();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		
+		String formattedDate = dateFormat.format(date);
+		
+		model.addAttribute("serverTime", formattedDate );
+		
+		return "home";
+	}
+	
+	@RequestMapping(value = "/loginProc", method = RequestMethod.GET)
+	public String loginProc(Locale locale, HttpServletRequest request, HttpServletResponse response, Model model) {
+		
+		/**
+		 * source 크로스 사이트 요청위조(2016/07 ~ 2016/07)
+		 * @param referer 
+		 * 2016/07/10 AC916641
+		 */
+		String referer = request.getHeader("referer");
+		String host = request.getServerName();
+		
+		System.out.println( " ip 주소  : " + request.getRemoteAddr() );
+		
+		System.out.println("header >>>> " + referer );
+		System.out.println("host >>>> " + host );
+		
+		if(referer==null || "".equals(referer)){
+			System.out.println(" 접근 불가 ");	
+			return  "/error";
+		}else{
+			if(!referer.contains(host)){
+				System.out.println(" 접근 불가 ");	
+				return  "/error";
+			}
+		}
+		
+		/*
+		 * 최신 버전
+		 *	newCleanFilter.cleanXssSqlIj( 처리할 문자열 , 처리종류 < xss or sqlIj >, 예외문자1, 예외문자2 ) 
+		 *  구 버전 
+		 * oldCleanFilter.cleanXssSqlIj( 처리할 문자열 , 처리종류 < xss or sqlIj > )
+		 */
+		try {
+			System.out.println(" 필터 처리 시작");
+			
+			/**
+			 * source 크로스 사이트 스크립팅, SQL인젝션 (2016/07 ~ 2016/07)
+			 * @param id, pwd, msg 
+			 * 2016/07/10 AC916641
+			 */
+			String id = Snippet.cleanXssSqlIj(request.getParameter("id"), "sqlIj");
+			String pwd = StringFilter.cleanXssSqlIj(request.getParameter("pwd"), "sqlIj");
+			String msg = Snippet.cleanXssSqlIj(request.getParameter("msg"),"xss");
+			
+			System.out.println( "log >>>> 필터된 id : " + id);
+			System.out.println( "log >>>> 필터된 id : " + pwd);
+			System.out.println( "log >>>> 필터된 id : " + msg);
+			
+			
+			model.addAttribute("id", id );
+			model.addAttribute("pwd", pwd );
+			model.addAttribute("msg", msg );
+			
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println(" 필터 오류 ");
+		}
+		
+		return "home";
+	}
+
+	@RequestMapping(value = "/error", method = RequestMethod.GET)
+	public String error(Locale locale, Model model) {
+		
+//		model.addAttribute("error",  );
+		
+		return "error";
+	}
+}

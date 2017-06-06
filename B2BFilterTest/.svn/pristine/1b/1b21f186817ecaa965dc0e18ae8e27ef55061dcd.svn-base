@@ -1,0 +1,51 @@
+package com.b2b.StringFilter;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
+public class StringFilter {
+	
+	public static String cleanXssSqlIj(Object source, String kind)
+        throws UnsupportedEncodingException
+    {
+        if(source == null || source.equals(""))
+            return "";
+        String value = String.valueOf(source);
+        try
+        {
+            value = value.replaceAll("(?i)(\\&\\#x?([0-9]|[a-e])*;)*", "");
+            value = URLDecoder.decode(value, "UTF-8");
+            value = value.replaceAll("(?i)(x{1}([0-9]|[a-e])+)*", "");
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        if("xss".equals(kind))
+        {
+            value = value.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "").replaceAll("\r|\n|&nbsp;", "");
+            value = value.replaceAll("('|\")*/*>+", "").replaceAll("<+('|\")*/*", "");
+            int _len = value.length() / 3;
+            for(int i = 0; i < _len; i++)
+            {
+                value = value.replaceAll("(?i)script|object|applet|embed|form|alert|href|cookie|input|img|src|fromcharcode|encodeuri|encodeuricomponent|expression|iframe|window|location|style|eval", "");
+                value = value.replaceAll("(?i)onclick|ondblclick|onmousedown|onmousemove|onmouseout|onmouseup|onmouseover|onmouseleave|onkeydown|onkeypress|onkeyup|onblur|onchange|onfocus|onreset|onselect|onsubmit|onload|onresize|onunload", "");
+            }
+
+            value = value.replaceAll(";|,|'|\"", "");
+        } else
+        if("sqlIj".equals(kind))
+            value = value.replaceAll("(?i)select|having|from|drop|where|join|update|union|insert|and|or|substr|declare|openrowset|user_tables|user_tab_columns|table_name|column_name|row_num", "");
+        return value;
+    }
+	
+	/**
+	 * 크로스 사이트 스크립팅(XSS)
+블라인드 SQL 인젝션
+링크 인젝션(크로스 사이트 요청 위조 유도)
+프레임을 통한 피싱
+크로스 사이트 요청 위조
+
+
+	 */
+}
