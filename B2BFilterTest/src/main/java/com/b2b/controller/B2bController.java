@@ -34,7 +34,7 @@ public class B2bController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = PageComponent.root)
-	public String filter(Locale locale, Model model, HttpServletRequest request) {
+	public String setting(Locale locale, Model model, HttpServletRequest request) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
 		System.out.println("++++++++++++++++++++++++++ 회원 세팅 시작 " );
