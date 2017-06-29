@@ -39,7 +39,7 @@ public class CommonFilter implements Filter{
 		   	 if ( ((HttpServletRequest)request).getRequestURI().startsWith(PageComponent.error) 
 		   			||  ((HttpServletRequest)request).getRequestURI().startsWith(PageComponent.pop) )
 		     {
-				 	System.out.println("에러, 팝업페이지일경우");
+				System.out.println("에러, 팝업페이지일경우");
 		     }else{
 				chain.doFilter(request, response);
 		     }
@@ -53,13 +53,13 @@ public class CommonFilter implements Filter{
 		   	 if( !UrlCheck.allowURLCheck(((HttpServletRequest)request)) 
 		   				|| !UrlCheck.allowIpCheck(((HttpServletRequest)request)))
 			 {
-				 	System.out.println("허용가능한 url,ip가 아닐경우 체크일경우");
-					HttpSession session = ((HttpServletRequest)request).getSession();
-					if(session!=null)
-					{
-						session.invalidate();
-					}
-					((HttpServletResponse)response).sendRedirect(PageComponent.errorCsrf);
+			 	System.out.println("허용가능한 url,ip가 아닐경우 체크일경우");
+				HttpSession session = ((HttpServletRequest)request).getSession();
+				if(session!=null)
+				{
+					session.invalidate();
+				}
+				((HttpServletResponse)response).sendRedirect(PageComponent.errorCsrf);
 			}
 		}
 
