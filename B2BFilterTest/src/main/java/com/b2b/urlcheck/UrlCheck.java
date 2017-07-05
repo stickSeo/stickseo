@@ -2,10 +2,12 @@ package com.b2b.urlcheck;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.stereotype.Repository;
+
 public class UrlCheck {
 	
 	// 크로스 사이트 요청위조 방지
-	public static boolean refereCheck (HttpServletRequest request)
+	public boolean refereCheck (HttpServletRequest request)
 	{
 		// null 체크 하지 않을 url 리스트
 		String[] null_n_Url = {"http://localhost:8080/","http://localhost:8080/login"};
@@ -55,7 +57,7 @@ public class UrlCheck {
 	}
 	
 	// 허용할 IP 체크 ( IP 차단 _ 화이트리스트 방식 )
-	public static boolean allowIpCheck (HttpServletRequest request)
+	public boolean allowIpCheck (HttpServletRequest request)
 	{
 		String[] allowIP = {"127.0.0.1","0:0:0:0:0:0:0:1"};
 		boolean check = false;
@@ -83,7 +85,7 @@ public class UrlCheck {
 	}
 	
 	// 허용할 URL 체크 ( URL 차단 _ 화이트리스트 방식 )
-	public static boolean allowURLCheck (HttpServletRequest request)
+	public boolean allowURLCheck (HttpServletRequest request)
 	{
 		String[] allowURL = {"http://localhost:8080/"};
 		boolean check = false;
@@ -113,7 +115,7 @@ public class UrlCheck {
 	}
 	
 	// SSL처리할 URL 체크 ( 암호화 되지 않은 전송 처리 )
-	public static boolean sslCheck (HttpServletRequest request)
+	public boolean sslCheck (HttpServletRequest request)
 	{
 		// ssl 처리 하려는 url 리스트
 		String[] sslURL = {};
@@ -143,7 +145,7 @@ public class UrlCheck {
 	}
 	
 	// return https 처리된 url
-	public static String getHttpsUrl(HttpServletRequest request)
+	public String getHttpsUrl(HttpServletRequest request)
 	{
 		// 반환할 URL
 		String resultUrl = "";
@@ -153,7 +155,6 @@ public class UrlCheck {
 		{
 			try 
 			{
-			 // resultUrl = request.getRequestURL().toString();
 				resultUrl = request.getScheme() + "://" + request.getServerName();
 				resultUrl += (request.getServerPort()==80?"":":"+request.getServerPort()); 
 				resultUrl += request.getAttribute("javax.servlet.forward.request_uri");

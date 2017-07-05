@@ -10,14 +10,24 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd" >
 
-
+	<!-- 사용자 로그인 및 권한 검사 인터셉터  -->   
 	<mvc:interceptors>
 		<mvc:interceptor>
             <mvc:mapping path="/**"/>
-			<!-- 크로스 사이트 요청위조 인터셉터  -->            
+            <mvc:exclude-mapping path="/" />
+            <mvc:exclude-mapping path="/loginProc" />
             <beans:bean id="commoninterceptor" class="com.b2b.commoninterceptorr.CommonInterceptorr"></beans:bean>
         </mvc:interceptor>
     </mvc:interceptors>
+    <!-- 캐시 사용 no  -->   
+	<mvc:interceptors>
+	    <beans:bean id="webContentInterceptor" class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+	        <beans:property name="cacheSeconds" value="0" />
+	        <beans:property name="useExpiresHeader" value="true" />
+	        <beans:property name="useCacheControlHeader" value="true" />
+	        <beans:property name="useCacheControlNoStore" value="true" />
+	    </beans:bean>
+	</mvc:interceptors>
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	

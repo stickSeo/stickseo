@@ -1,20 +1,23 @@
 package com.b2b.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.b2b.pagecomponent.PageComponent;
+import com.b2b.securityUtil.SecurityUtil;
+import com.b2b.service.LoginServiceImpl;
 import com.b2b.stringfilter.Snippet;
 import com.b2b.stringfilter.StringFilter;
 import com.b2b.userlist.UserList;
@@ -27,7 +30,10 @@ public class B2bController {
 	
 	
 	private static final Logger logger = LoggerFactory.getLogger(B2bController.class);
-
+	
+	@Autowired
+	private LoginServiceImpl loginService;
+	 
 	UserList userList = new UserList();
 
 	/**
@@ -37,39 +43,52 @@ public class B2bController {
 	public String setting(Locale locale, Model model, HttpServletRequest request) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
-		System.out.println("++++++++++++++++++++++++++ 회원 세팅 시작 " );
-		
+		System.out.println("++++++++++++++++++++++++++ 로그인 " );
+		request.getSession().invalidate();
 		// 회원 세팅
-		userList.putUser();
-		
+		//userList.putUser();
 		return PageComponent.login;
 	}
 	
-	@RequestMapping(value = PageComponent.filter)
-	public String loginProc(Locale locale, HttpServletRequest request, HttpServletResponse response, Model model) {
+	
+	@RequestMapping(value = PageComponent.loginProc)
+	public void loginProc(Locale locale, Model model, HttpServletRequest request, HttpServletResponse response) {
+		logger.info("Welcome home! The client locale is {}.", locale);
 		try {
-
-			List<HashMap<String, String>> user = userList.userList;
+			System.out.println("로그인 proc");
+			SecurityUtil secure = new SecurityUtil();
+			Map<String,Object> user = new HashMap<String, Object>();
+			user.put("id",request.getParameter("id"));
+			user.put("pwd",secure.ecrtyptSHA256( request.getParameter("pwd")));
+			HttpSession session = request.getSession();
 			
-			boolean userCheck = false;
-			for ( HashMap<String, String> data : user) 
-			{
-				if( data.containsKey( request.getParameter("id") ) )
-				{
-					System.out.println(" 해당 사용자는 가입된 회원입니다.");
-					userCheck = true;
-					break;	
+			int chk = loginService.loginCheck(user);
+			if(chk==1){
+				System.out.println("로그인 성공");
+				session.setAttribute("user", user.get("id"));
+				response.sendRedirect(PageComponent.filter);
+				return;
+			}else{
+				if(session.getId()!=null){
+					session.invalidate();
 				}
+				response.sendRedirect(PageComponent.root);
+				System.out.println("로그인 실패");
+				return;
 			}
-			if ( !userCheck )
-			{
-				System.out.println(" 가입된 회원이 아닙니다. ");
-			}
+		}catch(Exception ex){
 			
+		}
+		// 회원 세팅
+		//userList.putUser();
+	}
+	
+	@RequestMapping(value = PageComponent.filter)
+	public String filterVeiw(Locale locale, HttpServletRequest request, HttpServletResponse response, Model model) {
+		try {
 			// xml 프로퍼티 테스트
 			PageComponent p = new PageComponent();     
 			p.print();
-			
 			/*
 			 * 최신 버전
 			 *	newCleanFilter.cleanXssSqlIj( 처리할 문자열 , 처리종류 < xss or sqlIj >, 예외문자1, 예외문자2 ) 

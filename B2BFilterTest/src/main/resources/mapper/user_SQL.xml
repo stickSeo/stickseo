@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="login">
+    <!-- 로그인 확인  -->
+    <select id="loginCheck" parameterType="hashmap" resultType="int">
+	    <![CDATA[
+	    	SELECT COUNT(U_NO) CNT
+	    	  FROM USERTB
+	    	  WHERE 1=1
+           	  AND U_ID = #{id}
+           	  AND U_PWD = #{pwd}
+         ]]>
+    </select>
+</mapper>

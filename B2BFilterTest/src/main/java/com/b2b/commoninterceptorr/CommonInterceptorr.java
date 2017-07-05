@@ -15,6 +15,17 @@ public class CommonInterceptorr extends HandlerInterceptorAdapter{
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         try
         {
+        	
+        	// 로그인한 사용자인지 확인
+        	if(request.getSession().getAttribute("user")==null){
+        		System.out.println("사용자는 로그아웃상태 :"+request.getSession().getAttribute("user"));
+        		response.sendRedirect(PageComponent.root);
+        		return false;
+        	}
+        	System.out.println("세션 아이디 : " + request.getSession().getId());
+        	System.out.println("사용자는 로그인중");
+        	// 사용자 권한 확인
+        	System.out.println("공통 인터셉터 시작");
         	 // 에러, 팝업 페이지 일경우 체크 안함
 //	    	 if ( request.getRequestURI().startsWith(PageComponent.error) 
 //	    			||  request.getRequestURI().startsWith(PageComponent.pop) )

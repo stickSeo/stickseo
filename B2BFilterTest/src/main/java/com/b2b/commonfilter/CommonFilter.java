@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
+import com.b2b.dao.LoginDAO;
 import com.b2b.pagecomponent.PageComponent;
 import com.b2b.urlcheck.UrlCheck;
 
@@ -21,6 +22,7 @@ import com.b2b.urlcheck.UrlCheck;
 public class CommonFilter implements Filter{
 	
 	private FilterConfig filterConfig;
+	private UrlCheck urlChk = new UrlCheck();
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -30,8 +32,7 @@ public class CommonFilter implements Filter{
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)throws IOException, ServletException {
-		
-		 	System.out.println("공통 필터 테스트 시작");
+			
 		 	boolean accept = true;
 		 	
 			if(request instanceof HttpServletRequest){
@@ -46,15 +47,15 @@ public class CommonFilter implements Filter{
 			   	 else
 			   	 {
 				   	 // 크로스 사이트 요청위조
-				   	 if ( !UrlCheck.refereCheck(((HttpServletRequest)request)) )
+				   	 if ( !urlChk.refereCheck(((HttpServletRequest)request)) )
 				   	 {  	
 						accept = false;
 				   		((HttpServletResponse)response).sendRedirect(PageComponent.errorCsrf);
 				   		return;
 				   	 }
 			   	 	 // 허용가능한 url , ip를 체크
-				   	 if( !UrlCheck.allowURLCheck(((HttpServletRequest)request)) 
-				   				|| !UrlCheck.allowIpCheck(((HttpServletRequest)request)))
+				   	 if( !urlChk.allowURLCheck(((HttpServletRequest)request)) 
+				   				|| !urlChk.allowIpCheck(((HttpServletRequest)request)))
 					 {
 					 	accept = false;
 						HttpSession session = ((HttpServletRequest)request).getSession();

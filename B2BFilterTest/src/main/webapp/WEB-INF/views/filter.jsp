@@ -4,9 +4,10 @@
 <%@ page import="com.b2b.urlcheck.UrlCheck"%>
 <!-- 페이지 url 프로퍼티 클래스 -->
 <%@ page import="com.b2b.pagecomponent.*" %>
+<jsp:include page="./bootstrap/style.jsp"></jsp:include>
 <% 
-
-	String locationScript = UrlCheck.getHttpsUrl(request);
+	UrlCheck urlChk = new UrlCheck();
+	String locationScript = urlChk.getHttpsUrl(request);
 
 %>
 <html>
@@ -48,7 +49,6 @@ a {
 			Filter_ pwd  <input type="text" value="${pwd}"/> <br/>
 			Filter_ msg  <input type="text" value="${msg}"/> <br/>
 		</div>
-	
 	
 		<script src="//code.jquery.com/jquery.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
