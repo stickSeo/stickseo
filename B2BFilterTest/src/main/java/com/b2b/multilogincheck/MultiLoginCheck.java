@@ -97,9 +97,7 @@ public class MultiLoginCheck implements HttpSessionBindingListener {
 	public void valueUnbound(HttpSessionBindingEvent event) {
 	   System.out.println("로그인 정보 삭제 리스너 시작");
 	   try {  
-		   
 		 ht.remove(event.getName());
-		
 	   } catch (Exception ex) 
 	   { 
 		   System.out.println(" Exception ! ");

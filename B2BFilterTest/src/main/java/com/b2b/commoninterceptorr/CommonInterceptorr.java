@@ -15,12 +15,12 @@ public class CommonInterceptorr extends HandlerInterceptorAdapter{
         try
         {
         	// 로그인한 사용자인지 확인
-        	if(request.getSession()==null){
-        		System.out.println("사용자는 로그아웃상태 :"+request.getSession().getAttribute("user"));
+        	if(request.getSession().getAttribute("id")==null){
+        		System.out.println("사용자는 로그아웃상태 ");
         		response.sendRedirect(PageComponent.root);
         		return false;
         	}
-        	System.out.println("사용자는 로그인중");
+        	System.out.println(request.getSession().getAttribute("id")+" 사용자는 로그인중");
         	// 사용자 권한 확인
         	System.out.println("공통 인터셉터 시작");
         	 // 에러, 팝업 페이지 일경우 체크 안함

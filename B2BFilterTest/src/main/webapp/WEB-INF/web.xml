@@ -30,7 +30,6 @@
 		<filter-class>com.b2b.commonfilter.CommonFilter
 		</filter-class>
 	</filter>
-
 	<filter-mapping>
 		<filter-name>filter</filter-name>
 		<url-pattern>/*</url-pattern>

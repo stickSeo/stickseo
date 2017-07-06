@@ -69,6 +69,7 @@ public class B2bController {
 				if("N".equals( multChk ))
 				{	System.out.println("로그인 성공");
 					mlt.setSession(session, request.getParameter("id"));
+					session.setAttribute("id",request.getParameter("id"));
 					response.sendRedirect(PageComponent.filter);
 					return;
 				}else{
