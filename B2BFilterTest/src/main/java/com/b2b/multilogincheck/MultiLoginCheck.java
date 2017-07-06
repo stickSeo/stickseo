@@ -89,7 +89,7 @@ public class MultiLoginCheck implements HttpSessionBindingListener {
 	//세션 성립될 때
 	public void valueBound(HttpSessionBindingEvent event) {
 		HttpSession hs = event.getSession();
-		System.out.println("SessionListener.valueBound() : "+hs.getAttribute("admin_id"));
+		System.out.println("SessionListener.valueBound() : "+hs.getAttribute("id"));
 
 	}
 	 

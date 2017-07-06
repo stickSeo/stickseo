@@ -2,12 +2,11 @@ package com.b2b.commoninterceptorr;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.b2b.multilogincheck.MultiLoginCheck;
 import com.b2b.pagecomponent.PageComponent;
-import com.b2b.urlcheck.*;
 
 public class CommonInterceptorr extends HandlerInterceptorAdapter{
 	
@@ -15,14 +14,12 @@ public class CommonInterceptorr extends HandlerInterceptorAdapter{
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         try
         {
-        	
         	// 로그인한 사용자인지 확인
-        	if(request.getSession().getAttribute("user")==null){
+        	if(request.getSession()==null){
         		System.out.println("사용자는 로그아웃상태 :"+request.getSession().getAttribute("user"));
         		response.sendRedirect(PageComponent.root);
         		return false;
         	}
-        	System.out.println("세션 아이디 : " + request.getSession().getId());
         	System.out.println("사용자는 로그인중");
         	// 사용자 권한 확인
         	System.out.println("공통 인터셉터 시작");

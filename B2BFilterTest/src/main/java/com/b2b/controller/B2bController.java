@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.b2b.multilogincheck.MultiLoginCheck;
 import com.b2b.pagecomponent.PageComponent;
 import com.b2b.securityUtil.SecurityUtil;
 import com.b2b.service.LoginServiceImpl;
@@ -57,17 +58,27 @@ public class B2bController {
 		try {
 			System.out.println("로그인 proc");
 			SecurityUtil secure = new SecurityUtil();
+			MultiLoginCheck mlt = new MultiLoginCheck();
 			Map<String,Object> user = new HashMap<String, Object>();
 			user.put("id",request.getParameter("id"));
 			user.put("pwd",secure.ecrtyptSHA256( request.getParameter("pwd")));
 			HttpSession session = request.getSession();
-			
+			String multChk = mlt.LoginChk((String)user.get("id"), request.getLocalAddr());
 			int chk = loginService.loginCheck(user);
 			if(chk==1){
-				System.out.println("로그인 성공");
-				session.setAttribute("user", user.get("id"));
-				response.sendRedirect(PageComponent.filter);
-				return;
+				if("N".equals( multChk ))
+				{	System.out.println("로그인 성공");
+					mlt.setSession(session, request.getParameter("id"));
+					response.sendRedirect(PageComponent.filter);
+					return;
+				}else{
+					if(session.getId()!=null){
+						session.invalidate();
+					}
+					response.sendRedirect(PageComponent.root);
+					System.out.println("멀티로그인 차단");
+					return;
+				}
 			}else{
 				if(session.getId()!=null){
 					session.invalidate();
