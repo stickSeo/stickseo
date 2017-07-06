@@ -22,7 +22,6 @@ import com.b2b.urlcheck.UrlCheck;
 public class CommonFilter implements Filter{
 	
 	private FilterConfig filterConfig;
-	private UrlCheck urlChk = new UrlCheck();
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -33,6 +32,8 @@ public class CommonFilter implements Filter{
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)throws IOException, ServletException {
 			
+			UrlCheck urlChk = new UrlCheck();
+
 		 	boolean accept = true;
 		 	
 			if(request instanceof HttpServletRequest){
