@@ -64,10 +64,13 @@ public class B2bController {
 			user.put("pwd",secure.ecrtyptSHA256( request.getParameter("pwd")));
 			HttpSession session = request.getSession();
 			String multChk = mlt.LoginChk((String)user.get("id"), request.getLocalAddr());
-			int chk = loginService.loginCheck(user);
-			if(chk==1){
+			int loginchk = loginService.loginCheck(user);
+			int joinchk = loginService.joinCheck(user);
+			
+			if(loginchk==1){
 				if("N".equals( multChk ))
 				{	System.out.println("로그인 성공");
+				    loginService.loginUpdate(user);
 					mlt.setSession(session, request.getParameter("id"));
 					session.setAttribute("id",request.getParameter("id"));
 					response.sendRedirect(PageComponent.filter);
@@ -81,6 +84,16 @@ public class B2bController {
 					return;
 				}
 			}else{
+				System.out.println( loginService.bfatUpdate(user) );
+				if(joinchk!=1){
+
+					if(session.getId()!=null){
+						session.invalidate();
+					}
+					response.sendRedirect(PageComponent.root);
+					System.out.println("가입된 회원이 아닙니다.");
+					return;
+				}
 				if(session.getId()!=null){
 					session.invalidate();
 				}
@@ -88,6 +101,7 @@ public class B2bController {
 				System.out.println("로그인 실패");
 				return;
 			}
+			
 		}catch(Exception ex){
 			
 		}

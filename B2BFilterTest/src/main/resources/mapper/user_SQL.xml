@@ -12,4 +12,43 @@
            	  AND U_PWD = #{pwd}
          ]]>
     </select>
+    <!-- 회원가입 확인 -->
+    <select id="joinCheck" parameterType="hashmap" resultType="int">
+   		 <![CDATA[
+	    	SELECT COUNT(U_NO) CNT
+	    	  FROM USERTB
+	    	  WHERE 1=1
+           	  AND U_ID = #{id}
+         ]]>
+    </select>
+    <!-- 로그인날짜 업데이트 -->
+    <update id="loginUpdate" parameterType="hashmap">
+    	 <![CDATA[
+	    	UPDATE USERTB SET
+	    	U_LOGINDATE = SYSDATE
+	    	WHERE 1=1
+	    	AND U_ID = #{id}
+         ]]>
+    </update>
+    <!-- 브루투포스어택 업데이트 -->
+    <update id="bfatUpdate" parameterType="hashmap">
+    	<![CDATA[
+    		MERGE INTO BRUTOTB
+    		USING ON BR_ID = #{id}
+    		WHEN MATCHED THEN
+	    		UPDATE BRUTOTB SET
+		    	BR_DATE = SYSDATE
+		       ,BR_COUNT = NVL(BR_COUNT,0)+1
+		    	WHERE 1=1
+		    	AND BR_ID = #{id}
+		    WHEN NOT MATCHED THEN
+		    	INSERT INTO BRUTOTB
+		    	VALUES
+		    	( NVL((SELECT /*+ INDEX_DESC(BRUTOTB BR_NO) */ BR_NO FROM BRUTOTB WHERE ROWNUM = 1) ,0)+1
+		    	  ,#{id}
+		    	  ,SYSDATE
+		    	  ,1
+		    	 )
+    	]]>
+    </update>
 </mapper>

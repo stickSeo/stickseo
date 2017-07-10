@@ -20,4 +20,22 @@ public class LoginServiceImpl implements LoginService{
 		// TODO Auto-generated method stub
 		return loginDAO.loginCheck(map);
 	}
+
+	@Override
+	public int joinCheck(Map<String, Object> map) throws Exception {
+		// TODO Auto-generated method stub
+		return loginDAO.joinCheck(map);
+	}
+
+	@Override
+	public int loginUpdate(Map<String, Object> map) throws Exception {
+		// TODO Auto-generated method stub
+		return loginDAO.loginUpdate(map);
+	}
+
+	@Override
+	public int bfatUpdate(Map<String, Object> map) throws Exception {
+		// TODO Auto-generated method stub
+		return loginDAO.bfatUpdate(map);
+	}
 }
