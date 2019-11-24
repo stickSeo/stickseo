@@ -16,12 +16,6 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
-	@RequestMapping("/")
-	public String root_test() throws Exception{
-		return "Hello Root";
-		
-	}
-	
 	@RequestMapping("/board/boardList.do")
 	public ModelAndView BoardList() throws Exception{
 		
