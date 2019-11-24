@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>	
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="board.mapper.BoardMapper">
+	
+	<!-- 게시판 리스트 -->
+ 	<select id="selectBoardList" resultType="board.dto.BoardDto">
+	 	<![CDATA[
+	 	   SELECT
+	 		   board_idx,
+	 		   title,
+	 		   hit_cnt,
+	 		   DATE_FORMAT(created_datetime, '%Y.%M.%D %h:%I:%S') AS created_datetime
+ 		   FROM
+ 		   		t_board
+ 		   WHERE 
+ 		   		deleted_yn = 'N'
+ 		   ORDER BY board_idx DESC
+	 	]]>
+ 	</select>
+ 
+ 
+ 
+ </mapper>
