@@ -1,5 +1,7 @@
 package configuration;
 
+import java.util.logging.Logger;
+
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -46,7 +48,8 @@ public class DatabaseConfiguration {
 	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception{
 		SqlSessionFactoryBean sqlSessionFatoryBean = new SqlSessionFactoryBean();
 		sqlSessionFatoryBean.setDataSource(dataSource);
-		sqlSessionFatoryBean.setMapperLocations(applicationContext.getResources("classpath:/mapper/**/sql-*.xml"));
+		Logger.getLogger(">>>>>>>>>>>>>>>"+applicationContext.getResources("classpath:/mapper/sql-*.xml"));
+		sqlSessionFatoryBean.setMapperLocations(applicationContext.getResources("classpath:/mapper/sql-*.xml"));
 		sqlSessionFatoryBean.setConfiguration(mybatisConfig());
 		
 		return sqlSessionFatoryBean.getObject();

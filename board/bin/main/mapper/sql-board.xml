@@ -13,7 +13,7 @@
 	 		   hit_cnt,
 	 		   DATE_FORMAT(created_datetime, '%Y.%M.%D %h:%I:%S') AS created_datetime
  		   FROM
- 		   		t_board
+ 		   		tb_board
  		   WHERE 
  		   		deleted_yn = 'N'
  		   ORDER BY board_idx DESC
