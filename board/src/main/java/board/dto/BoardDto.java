@@ -16,4 +16,6 @@ public class BoardDto {
 	private String deleteId;
 	private String deletedDatetime;
 	private String deleted_yn;
+	
+	
 }
