@@ -25,7 +25,6 @@ public class DatabaseConfiguration {
 	private ApplicationContext applicationContext;
 	
 	@Bean
-//	@ConfigurationProperties(prefix="mybatis.configuration")
 	public org.apache.ibatis.session.Configuration mybatisConfig(){
 		return new org.apache.ibatis.session.Configuration();
 	}
@@ -34,9 +33,9 @@ public class DatabaseConfiguration {
 	public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception{
 		SqlSessionFactoryBean sqlSessionFatoryBean = new SqlSessionFactoryBean();
 		sqlSessionFatoryBean.setDataSource(dataSource);
-		sqlSessionFatoryBean.setMapperLocations(applicationContext.getResources("classpath:mapper/sql-*.xml"));
+//		sqlSessionFatoryBean.setMapperLocations(applicationContext.getResources("classpath:/mapper/**.xml"));
 		sqlSessionFatoryBean.setConfiguration(mybatisConfig());
-		
+			
 		return sqlSessionFatoryBean.getObject();
 		
 	}

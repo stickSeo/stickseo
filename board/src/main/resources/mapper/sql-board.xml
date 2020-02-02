@@ -21,5 +21,55 @@
 	 	
  	</select>
  
+ 	<!-- 게시글 상세 -->
+ 	<select id="boardDetail" parameterType="board.dto.BoardDto" resultType="board.dto.BoardDto">
+	 	<![CDATA[
+	 	   SELECT
+	 		   BOARDIDX as board_idx
+	 		   ,TITLE
+	 		   ,HINTCNT as hit_cnt
+	 		   ,CREATEID = #{CREATEID}
+ 	 		   ,CREATEDDATETIME as created_datetime
+ 		   FROM
+ 		   		tb_board
+ 		   WHERE 
+ 		   		boardidx = #{board_idx}
+	 	]]>
+	 	
+ 	</select>
+ 	
+ 	<!-- 게시글 추가 -->
+ 	<insert id="boardWrite" parameterType="board.dto.BoardDto">
+ 		<![CDATA[
+ 			
+	 	]]>
+ 	</insert>
+ 	 <!-- 게시글 추가 -->
+ 	
+ 	<!-- 게시글 업데이트-->
+ 	<update id="boardUpdate" parameterType="board.dto.BoardDto" >
+ 		
+ 		<![CDATA[
+ 			UPDATE TB_BOARD SET 
+ 			TITLE = #{TITLE}
+ 			,UPDATERID = #{UPDATERID}
+ 			,UPDATEDDATETIME = SYSDATE
+ 			WHERE BOARDIDX = #{BOARD_IDX}
+	 	]]>
+ 	
+ 	</update>
+ 	<!-- 게시글 업데이트-->
+
+ 	<!-- 게시글 삭제-->
+ 	<update id="boardDelete" parameterType="board.dto.BoardDto" >
+ 		
+ 		<![CDATA[
+ 			UPDATE TB_BOARD SET 
+ 			deleted_yn = 'Y'
+ 			WHERE BOARDIDX = #{BOARD_IDX}
+	 	]]>
+ 	
+ 	</update>
+  	<!-- 게시글 삭제-->
  
  </mapper>

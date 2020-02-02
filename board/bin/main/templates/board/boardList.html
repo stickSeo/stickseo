@@ -2,13 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<title> board </title>
-	<link rel="stylesheet" th:href="@{/css/style.css}"></link>
+	<link rel="stylesheet" th:href="@{/resources/css/board.css}"></link>
 </head>
 <body>
 	<div class="container">
 		<h2>게시판 목록</h2>
+		<a href="/main" class="btn"> 메인 </a>
 		<table class="board_list">
 			<colgroup>
+				<col width="10%" />
 				<col width="10%" />
 				<col width="40%"/>
 				<col width="10%"/>
@@ -16,6 +18,7 @@
 			</colgroup>
 			<thead>
 				<tr>
+					<th scope="col"> <input type="checkbox" id="allChk" name="allChk" /> </th>
 					<th scope="col"> 글번호 </th>
 					<th scope="col"> 제목 </th>
 					<th scope="col"> 조회수 </th>
@@ -24,6 +27,7 @@
 			</thead>
 			<tbody>
 				<tr th:if="${#lists.size(list)} > 0" th:each="list:${list}">
+				    <td><input type="checkbox" name="chk" value="yyy"/></td>
 					<td th:text="${list.boardIdx}"></td>
 					<td class="title" th:text="${list.title}"></td>
 					<td th:text="${list.hitCnt}"></td>
@@ -34,7 +38,8 @@
 				</tr>
 			</tbody>
 		</table>
-		<a href="/board/boardWrite.do" class="btn"> 글쓰기 </a>
+		<a href="/board/boardWrite" class="btn"> 글쓰기 </a>
+		<a href="/board/boardDelete" class="btn"> 삭제 </a>
 	</div>
 </body>
 </html>

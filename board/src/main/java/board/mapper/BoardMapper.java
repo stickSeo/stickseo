@@ -12,4 +12,6 @@ import board.dto.BoardDto;
 public interface BoardMapper {
 
 	List<BoardDto> selectBoardList() throws Exception;
+	BoardDto boardDetail(BoardDto boardDto) throws Exception;
+
 }

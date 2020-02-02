@@ -18,7 +18,6 @@ public class BoardController {
 	private BoardService boardService;
 	
 	@RequestMapping("/main")
-//	@ResponseBody
 	public ModelAndView root() throws Exception{
 		
 		ModelAndView mv = new ModelAndView("/board/main");
@@ -29,13 +28,60 @@ public class BoardController {
 	
 	
 	@RequestMapping("/board")
-//	@ResponseBody
 	public ModelAndView BoardList() throws Exception{
 		
 		ModelAndView mv = new ModelAndView("/board/boardList");
 		
 		List<BoardDto> list = boardService.selectBoardList();
 		mv.addObject("list", list);
+		
+		return mv;
+		
+	}
+	
+	@RequestMapping("/boardDetail")
+	public ModelAndView boardDetail(BoardDto boardDto) throws Exception{
+		
+		ModelAndView mv = new ModelAndView("/board/boardDetail");
+		
+		BoardDto board = boardService.boardDetail(boardDto);
+		mv.addObject("board", board);
+		
+		return mv;
+		
+	}
+	
+	@RequestMapping("/boardWrite")
+	public ModelAndView boardWrite() throws Exception{
+		
+		ModelAndView mv = new ModelAndView("/board/boardWrite");
+		
+//		List<BoardDto> list = boardService.selectBoardList();
+//		mv.addObject("list", list);
+		
+		return mv;
+		
+	}
+	
+	@RequestMapping("/boarUpdate")
+	public ModelAndView boarUpdate() throws Exception{
+		
+		ModelAndView mv = new ModelAndView("/board/boarDelete");
+		
+//		List<BoardDto> list = boardService.selectBoardList();
+//		mv.addObject("list", list);
+		
+		return mv;
+		
+	}
+	
+	@RequestMapping("/boarDelete")
+	public ModelAndView boarDelete() throws Exception{
+		
+		ModelAndView mv = new ModelAndView("/board/boarDelete");
+		
+//		List<BoardDto> list = boardService.selectBoardList();
+//		mv.addObject("list", list);
 		
 		return mv;
 		
