@@ -2,7 +2,6 @@ package heapsortTest;
 
 import java.util.Scanner;
 
-//  문제풀이용
 public class HeapSort {
 
 	public static void main(String[] args) {
